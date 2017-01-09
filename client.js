@@ -3,7 +3,9 @@ $(function(){
   var totalMonthlySalary = 0;
 
   $('#employeesTable').on('click', '.deleteButton', function(){
-    var salaryToRemoveFromTotal = $(this).parent().prev().text();
+    // var salaryToRemoveFromTotal = $(this).parent().prev().text();
+    console.log('data is: ', $(this).parent().data()); // this is an object like {salary: "24"}
+    var salaryToRemoveFromTotal = $(this).parent().data('salary');
     updateMonthlySalary("-" + salaryToRemoveFromTotal);
     $(this).parent().parent().remove();
   });
@@ -27,16 +29,21 @@ $(function(){
 
     console.log(newEmployeeObject);
 
-    var newRow = $('<tr>' +
-      '<td>' + newEmployeeObject.firstName + '</td>'+
-      '<td>' + newEmployeeObject.lastName + '</td>'+
-      '<td>' + newEmployeeObject.number + '</td>'+
-      '<td>' + newEmployeeObject.title + '</td>'+
-      '<td>' + newEmployeeObject.salary + '</td>'+
-      '<td><button class="deleteButton">Delete</button></td>' +
+    var $newRow = $('<tr>' +
+    '<td>' + newEmployeeObject.firstName + '</td>'+
+    '<td>' + newEmployeeObject.lastName + '</td>'+
+    '<td>' + newEmployeeObject.number + '</td>'+
+    '<td>' + newEmployeeObject.title + '</td>'+
+    '<td>' + newEmployeeObject.salary + '</td>'+
     '</tr>');
 
-    $('#employeesTable').append(newRow);
+    var $deleteButton = $('<td><button class="deleteButton">Delete</button></td>');
+
+    $deleteButton.data('salary', newEmployeeObject.salary);
+
+    $newRow.append($deleteButton);
+
+    $('#employeesTable').append($newRow);
 
     $('#newEmployeeForm input[type="text"]').val('');
     $('#newEmployeeForm input[type="number"]').val('');
