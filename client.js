@@ -2,6 +2,12 @@ $(function(){
   console.log('jQuery is working!!!!!!!!!');
   var totalMonthlySalary = 0;
 
+  $('#employeesTable').on('click', '.deleteButton', function(){
+    var salaryToRemoveFromTotal = $(this).parent().prev().text();
+    updateMonthlySalary("-" + salaryToRemoveFromTotal);
+    $(this).parent().parent().remove();
+  });
+
   $('#newEmployeeForm').on('submit', function(event){
     event.preventDefault(); // stop the page from reloading and redirecting
     console.log('Form has been submitted!!');
@@ -21,24 +27,29 @@ $(function(){
 
     console.log(newEmployeeObject);
 
-    var newRow = '<tr>' +
+    var newRow = $('<tr>' +
       '<td>' + newEmployeeObject.firstName + '</td>'+
       '<td>' + newEmployeeObject.lastName + '</td>'+
       '<td>' + newEmployeeObject.number + '</td>'+
       '<td>' + newEmployeeObject.title + '</td>'+
       '<td>' + newEmployeeObject.salary + '</td>'+
-    '</tr>';
+      '<td><button class="deleteButton">Delete</button></td>' +
+    '</tr>');
 
     $('#employeesTable').append(newRow);
 
     $('#newEmployeeForm input[type="text"]').val('');
     $('#newEmployeeForm input[type="number"]').val('');
 
+    updateMonthlySalary(newEmployeeObject.salary);
 
+  });
+
+  function updateMonthlySalary(newEmployeeSalary) {
     // With new employee, divide salary by 12, add to current totalMonthlySalary
-    totalMonthlySalary += newEmployeeObject.salary / 12;
+    totalMonthlySalary += newEmployeeSalary / 12;
     console.log('totalMonthlySalary is ', totalMonthlySalary);
 
     $('#monthlySalary').text(totalMonthlySalary.toLocaleString("en-US", { style: 'currency', currency: 'USD' }));
-  });
+  }
 });
