@@ -28,5 +28,8 @@ $(function(){
     '</tr>';
 
     $('#employeesTable').append(newRow);
+
+    $('#newEmployeeForm input[type="text"]').val('');
+    $('#newEmployeeForm input[type="number"]').val('');
   });
 });
